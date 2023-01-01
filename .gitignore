@@ -1,0 +1,12 @@
+# STM32CubeIDE
+/firmware/.metadata
+/firmware/.settings
+/firmware/[Rr]elease
+/firmware/[Dd]ebug
+/firmware/firmware.launch
+
+# KiCad
+/hardware/*-backups/
+/hardware/*.kicad_prl
+/hardware/fp-info-cache
+/hardware/\#auto_saved_files\#

@@ -1,0 +1,20 @@
+(kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid a7111a76-1cde-40d9-a0f6-ccb22db60681)
+
+  (paper "A4")
+
+  (title_block
+    (title "DC-DC Buck Converter")
+    (date "2023-01-01")
+    (rev "0.1.0")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
