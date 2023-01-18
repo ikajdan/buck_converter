@@ -3,7 +3,7 @@
 /firmware/.settings
 /firmware/[Rr]elease
 /firmware/[Dd]ebug
-/firmware/firmware.launch
+/firmware/*.launch
 
 # KiCad
 /hardware/*-backups/
