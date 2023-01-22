@@ -25,9 +25,10 @@
 Buck_Handle_TypeDef hbuck1 = {
 	.Voltage = 0,
 	.Current = 0,
-	.TargetVoltage = 0, .CurrentLimit = 0,
-	.Buck_OutputMode = 0,
-	.Buck_Output = 0
+	.TargetVoltage = 0,
+	.CurrentLimit = 0,
+	.OutputMode = 0,
+	.Output = 1
 };
 
 /* Private function prototypes -----------------------------------------------*/

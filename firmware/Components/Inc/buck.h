@@ -23,8 +23,8 @@ typedef struct
 	unsigned int Current;
 	unsigned int TargetVoltage;
 	unsigned int CurrentLimit;
-	_Bool Buck_OutputMode; // TODO: Use enums here
-	_Bool Buck_Output;
+	_Bool OutputMode; // TODO: Use enums here
+	_Bool Output;
 } Buck_Handle_TypeDef;
 
 /* Public define -------------------------------------------------------------*/
@@ -94,5 +94,19 @@ unsigned int Buck_GetCurrentLimit(Buck_Handle_TypeDef *hbuck);
  * @retval None
  */
 void Buck_SetCurrentLimit(Buck_Handle_TypeDef *hbuck, unsigned int currentLimit);
+
+/**
+ * @brief Returns the output state
+ * @param[in] hbuck : Buck handler
+ * @retval Output state (true or false)
+ */
+_Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck);
+
+/**
+ * @brief Toggles the output on or off
+ * @param[in] hbuck : Buck handler
+ * @retval None
+ */
+void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck);
 
 #endif /* INC_BUCK_H_ */

@@ -116,7 +116,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, DUTY_CYCLE);
+		if(Buck_GetOutput(&hbuck1) == 1) {
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, DUTY_CYCLE);
+		} else {
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100);
+		}
+
 		HAL_Delay(100);
 
 		char temp_str[LCD_LINE_BUF_LEN];
@@ -238,7 +243,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if (GPIO_Pin == BTN_OUT_Pin)
 	{
-		DUTY_CYCLE = 100;
+		Buck_ToggleOutput(&hbuck1);
 	}
 	else if (GPIO_Pin == BTN_RESET_Pin)
 	{

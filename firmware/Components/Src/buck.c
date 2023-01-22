@@ -113,3 +113,23 @@ void Buck_SetCurrentLimit(Buck_Handle_TypeDef *hbuck, unsigned int currentLimit)
 {
 	hbuck->CurrentLimit = currentLimit;
 }
+
+/**
+ * @brief Returns the output state
+ * @param[in] hbuck : Buck handler
+ * @retval Output state (0 or 1)
+ */
+_Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck)
+{
+	return hbuck->Output;
+}
+
+/**
+ * @brief Toggles the output on or off
+ * @param[in] hbuck : Buck handler
+ * @retval None
+ */
+void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck)
+{
+	hbuck->Output = !(hbuck->Output);
+}
