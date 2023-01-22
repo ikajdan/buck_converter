@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "aio.h"
+#include "buck_config.h"
 #include "lcd_config.h"
 /* USER CODE END Includes */
 
@@ -38,6 +39,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+// Scaling factor based on the voltage divider
+const unsigned int VOLTAGE_MULTIPLIER = 10;
+// Scaling factor based on the shunt resistor
+const unsigned int CURRENT_MULTIPLIER = 10;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,9 +55,6 @@
 /* USER CODE BEGIN PV */
 uint16_t DUTY_CYCLE = 0;
 uint16_t ADC1_DATA[2];
-unsigned int ADC1_CONV_RESULTS_MV[2];
-const unsigned int VOLTAGE_MULTIPLIER = 10;
-const unsigned int CURRENT_MULTIPLIER = 10;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -117,12 +119,12 @@ int main(void)
 		char temp_str[LCD_LINE_BUF_LEN];
 
 		snprintf(temp_str, LCD_LINE_LEN, "%s: %*d %s", "U", 4,
-				ADC1_CONV_RESULTS_MV[0], "mV");
+				Buck_GetVoltage(&hbuck1), "mV");
 		LCD_DIO_SetCursor(&hlcd1, 0, 0);
 		LCD_DIO_printStr(&hlcd1, temp_str);
 
 		snprintf(temp_str, LCD_LINE_LEN, "%s: %*d %s", "I", 4,
-				ADC1_CONV_RESULTS_MV[1], "mA");
+				Buck_GetCurrent(&hbuck1), "mA");
 		LCD_DIO_SetCursor(&hlcd1, 1, 0);
 		LCD_DIO_printStr(&hlcd1, temp_str);
 		/* USER CODE END WHILE */
@@ -208,10 +210,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	if (hadc == &hadc1)
 	{
-		ADC1_CONV_RESULTS_MV[0] = ADC_REG2VOLTAGE(ADC1_DATA[0])
-				* VOLTAGE_MULTIPLIER;
-		ADC1_CONV_RESULTS_MV[1] = ADC_REG2VOLTAGE(ADC1_DATA[1])
-				* CURRENT_MULTIPLIER;
+		Buck_SetVoltage(&hbuck1,
+				ADC_REG2VOLTAGE(ADC1_DATA[0] * VOLTAGE_MULTIPLIER));
+		Buck_SetCurrent(&hbuck1,
+				ADC_REG2VOLTAGE(ADC1_DATA[1] * CURRENT_MULTIPLIER));
 	}
 }
 /* USER CODE END 4 */
