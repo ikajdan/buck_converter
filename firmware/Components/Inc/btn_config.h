@@ -21,11 +21,12 @@
 /* Public macro --------------------------------------------------------------*/
 
 /* Public variables ----------------------------------------------------------*/
-extern BTN_DIO_Handle_TypeDef husrbtn; //<! Blue on-board button ("USER")
-extern BTN_DIO_Handle_TypeDef hbtn1; 	//<! THT pushbutton #1
-extern BTN_DIO_Handle_TypeDef hbtn2; 	//<! THT pushbutton #2
+extern BTN_DIO_Handle_TypeDef hbtn1;
+extern BTN_DIO_Handle_TypeDef hbtn2;
 extern BTN_DIO_Handle_TypeDef hbtn3;
 extern BTN_DIO_Handle_TypeDef hbtn4;
+extern BTN_DIO_Handle_TypeDef hbtn5;
+extern BTN_DIO_Handle_TypeDef hbtn6;
 
 /* Public function prototypes ------------------------------------------------*/
 

@@ -57,10 +57,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define BTN_PRESET4_Pin GPIO_PIN_2
-#define BTN_PRESET4_GPIO_Port GPIOE
-#define BTN_PRESET3_Pin GPIO_PIN_4
+#define BTN_PRESET3_Pin GPIO_PIN_2
 #define BTN_PRESET3_GPIO_Port GPIOE
+#define BTN_PRESET4_Pin GPIO_PIN_4
+#define BTN_PRESET4_GPIO_Port GPIOE
+#define BTN_OUT_Pin GPIO_PIN_5
+#define BTN_OUT_GPIO_Port GPIOE
+#define BTN_OUT_EXTI_IRQn EXTI9_5_IRQn
+#define BTN_RESET_Pin GPIO_PIN_6
+#define BTN_RESET_GPIO_Port GPIOE
+#define BTN_RESET_EXTI_IRQn EXTI9_5_IRQn
 #define USER_Btn_Pin GPIO_PIN_13
 #define USER_Btn_GPIO_Port GPIOC
 #define MCO_Pin GPIO_PIN_0
@@ -73,14 +79,14 @@ void Error_Handler(void);
 #define BTN_PRESET2_GPIO_Port GPIOC
 #define VOLTAGE_Pin GPIO_PIN_3
 #define VOLTAGE_GPIO_Port GPIOA
-#define LD1_Pin GPIO_PIN_0
-#define LD1_GPIO_Port GPIOB
+#define LED_OUT_Pin GPIO_PIN_0
+#define LED_OUT_GPIO_Port GPIOB
 #define LCD_D7_Pin GPIO_PIN_12
 #define LCD_D7_GPIO_Port GPIOF
 #define LCD_D4_Pin GPIO_PIN_12
 #define LCD_D4_GPIO_Port GPIOB
-#define LD3_Pin GPIO_PIN_14
-#define LD3_GPIO_Port GPIOB
+#define LED_OC_Pin GPIO_PIN_14
+#define LED_OC_GPIO_Port GPIOB
 #define LCD_EN_Pin GPIO_PIN_15
 #define LCD_EN_GPIO_Port GPIOB
 #define STLK_RX_Pin GPIO_PIN_8

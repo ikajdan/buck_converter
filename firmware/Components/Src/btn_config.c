@@ -26,6 +26,8 @@ BTN_DIO_Handle_TypeDef hbtn1 = BTN_DIO_INIT_HANDLE(BTN_PRESET1, BTN_PULL_UP);
 BTN_DIO_Handle_TypeDef hbtn2 = BTN_DIO_INIT_HANDLE(BTN_PRESET2, BTN_PULL_UP);
 BTN_DIO_Handle_TypeDef hbtn3 = BTN_DIO_INIT_HANDLE(BTN_PRESET3, BTN_PULL_UP);
 BTN_DIO_Handle_TypeDef hbtn4 = BTN_DIO_INIT_HANDLE(BTN_PRESET4, BTN_PULL_UP);
+BTN_DIO_Handle_TypeDef hbtn5 = BTN_DIO_INIT_HANDLE(BTN_OUT, BTN_PULL_UP);
+BTN_DIO_Handle_TypeDef hbtn6 = BTN_DIO_INIT_HANDLE(BTN_RESET, BTN_PULL_UP);
 
 /* Private function prototypes -----------------------------------------------*/
 
