@@ -10,6 +10,7 @@
  */
 
 /* Includes ----------------------------------------------------------*/
+#include "gpio.h"
 #include "buck.h"
 
 /* Typedef -----------------------------------------------------------*/
@@ -131,5 +132,11 @@ _Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck)
  */
 void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck)
 {
-	hbuck->Output = !(hbuck->Output);
+	if(hbuck->Output == 1) {
+		hbuck->Output = 0;
+		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 0);
+	} else {
+		hbuck->Output = 1;
+		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 1);
+	}
 }

@@ -59,8 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BTN_PRESET3_Pin GPIO_PIN_2
 #define BTN_PRESET3_GPIO_Port GPIOE
+#define BTN_PRESET3_EXTI_IRQn EXTI2_IRQn
 #define BTN_PRESET4_Pin GPIO_PIN_4
 #define BTN_PRESET4_GPIO_Port GPIOE
+#define BTN_PRESET4_EXTI_IRQn EXTI4_IRQn
 #define BTN_OUT_Pin GPIO_PIN_5
 #define BTN_OUT_GPIO_Port GPIOE
 #define BTN_OUT_EXTI_IRQn EXTI9_5_IRQn
@@ -73,10 +75,12 @@ void Error_Handler(void);
 #define MCO_GPIO_Port GPIOH
 #define BTN_PRESET1_Pin GPIO_PIN_0
 #define BTN_PRESET1_GPIO_Port GPIOC
+#define BTN_PRESET1_EXTI_IRQn EXTI0_IRQn
 #define CURRENT_Pin GPIO_PIN_2
 #define CURRENT_GPIO_Port GPIOC
 #define BTN_PRESET2_Pin GPIO_PIN_3
 #define BTN_PRESET2_GPIO_Port GPIOC
+#define BTN_PRESET2_EXTI_IRQn EXTI3_IRQn
 #define VOLTAGE_Pin GPIO_PIN_3
 #define VOLTAGE_GPIO_Port GPIOA
 #define LED_OUT_Pin GPIO_PIN_0

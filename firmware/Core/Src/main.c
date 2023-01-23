@@ -119,6 +119,21 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
+		if (Buck_GetVoltage(&hbuck1) > Buck_GetTargetVoltage(&hbuck1))
+		{
+			DUTY_CYCLE = DUTY_CYCLE + 1;
+			if (DUTY_CYCLE > 100) {
+				DUTY_CYCLE = 100;
+			}
+		}
+		else
+		{
+			DUTY_CYCLE = DUTY_CYCLE - 1;
+			if (DUTY_CYCLE < 0) {
+				DUTY_CYCLE = 0;
+			}
+		}
+
 		if (Buck_GetOutput(&hbuck1) == 1)
 		{
 			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, DUTY_CYCLE);
@@ -261,6 +276,22 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	else if (GPIO_Pin == BTN_RESET_Pin)
 	{
 		ENERGY = 0;
+	}
+	else if (GPIO_Pin == BTN_PRESET1_Pin)
+	{
+		Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) - 100);
+	}
+	else if (GPIO_Pin == BTN_PRESET2_Pin)
+	{
+		Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) + 100);
+	}
+	else if (GPIO_Pin == BTN_PRESET3_Pin)
+	{
+		Buck_SetCurrentLimit(&hbuck1, Buck_GetCurrentLimit(&hbuck1) - 100);
+	}
+	else if (GPIO_Pin == BTN_PRESET4_Pin)
+	{
+		Buck_SetCurrentLimit(&hbuck1, Buck_GetCurrentLimit(&hbuck1) + 100);
 	}
 }
 
