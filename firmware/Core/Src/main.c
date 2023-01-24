@@ -112,8 +112,8 @@ int main(void)
 	MX_TIM7_Init();
 	MX_TIM3_Init();
 	/* USER CODE BEGIN 2 */
-	HAL_TIM_Base_Start_IT(&htim10);
-	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+	HAL_TIM_Base_Start_IT(&htim10); // 1 kHz
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1); // 10 kHz
 	LCD_DIO_Init(&hlcd1);
 	HAL_UART_Receive_IT(&huart3, (uint8_t*) UART_BUFFER, SERIAL_API_BUF_SIZE);
 	/* USER CODE END 2 */
@@ -122,25 +122,7 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		int16_t error = (int16_t) Buck_GetTargetVoltage(&hbuck1)
-				- (int16_t) Buck_GetVoltage(&hbuck1);
-		float du = KI * error;
-
-		DUTY_CYCLE += du;
-
-		if (Buck_GetOutput(&hbuck1) == 1)
-		{
-			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
-		}
-		else
-		{
-			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100);
-		}
-
 		//ENC_GetCounter(&henc1);
-
-		HAL_Delay(100);
-
 		char temp_str[LCD_LINE_BUF_LEN];
 
 		float U = Buck_GetVoltage(&hbuck1) / 1000.0;
@@ -168,6 +150,8 @@ int main(void)
 		Serial_API_WriteMsg(&hbuck1, msg);
 
 		HAL_UART_Transmit_IT(&huart3, (uint8_t*) msg, strlen(msg));
+
+		HAL_Delay(500);
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -193,7 +177,7 @@ void SystemClock_Config(void)
 	/** Configure the main internal regulator output voltage
 	 */
 	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
 	/** Initializes the RCC Oscillators according to the specified parameters
 	 * in the RCC_OscInitTypeDef structure.
@@ -203,10 +187,17 @@ void SystemClock_Config(void)
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
 	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 	RCC_OscInitStruct.PLL.PLLM = 4;
-	RCC_OscInitStruct.PLL.PLLN = 72;
+	RCC_OscInitStruct.PLL.PLLN = 216;
 	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 3;
+	RCC_OscInitStruct.PLL.PLLQ = 9;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	/** Activate the Over-Drive mode
+	 */
+	if (HAL_PWREx_EnableOverDrive() != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -217,10 +208,10 @@ void SystemClock_Config(void)
 			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -236,6 +227,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim == &htim10)
 	{
+		// ADC DMA request
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t*) ADC1_DATA,
 				hadc1.Init.NbrOfConversion);
 	}
@@ -251,10 +243,27 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	if (hadc == &hadc1)
 	{
+		// Store values in the struct
 		Buck_SetVoltage(&hbuck1,
 				ADC_REG2VOLTAGE(ADC1_DATA[0] * VOLTAGE_MULTIPLIER));
 		Buck_SetCurrent(&hbuck1,
 				ADC_REG2VOLTAGE(ADC1_DATA[1] * CURRENT_MULTIPLIER));
+
+		// Control loop
+		int16_t error = (int16_t) Buck_GetTargetVoltage(&hbuck1)
+				- (int16_t) Buck_GetVoltage(&hbuck1);
+		float du = KI * error;
+
+		DUTY_CYCLE += du;
+
+		if (Buck_GetOutput(&hbuck1) == 1)
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
+		}
+		else
+		{
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100); // Output disabled
+		}
 	}
 }
 
