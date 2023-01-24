@@ -30,6 +30,7 @@
 #include "aio.h"
 #include "buck_config.h"
 #include "lcd_config.h"
+#include "encoder_config.h"
 #include "serial_api_config.h"
 /* USER CODE END Includes */
 
@@ -60,6 +61,7 @@ uint16_t ADC1_DATA[2];
 uint16_t DUTY_CYCLE = 0;
 double ENERGY = 0;
 char UART_BUFFER[SERIAL_API_BUF_SIZE];
+float KI = 0.001;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,6 +110,7 @@ int main(void)
 	MX_ADC1_Init();
 	MX_TIM10_Init();
 	MX_TIM7_Init();
+	MX_TIM3_Init();
 	/* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim10);
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
@@ -119,29 +122,22 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		if (Buck_GetVoltage(&hbuck1) > Buck_GetTargetVoltage(&hbuck1))
-		{
-			DUTY_CYCLE = DUTY_CYCLE + 1;
-			if (DUTY_CYCLE > 100) {
-				DUTY_CYCLE = 100;
-			}
-		}
-		else
-		{
-			DUTY_CYCLE = DUTY_CYCLE - 1;
-			if (DUTY_CYCLE < 0) {
-				DUTY_CYCLE = 0;
-			}
-		}
+		int16_t error = (int16_t) Buck_GetTargetVoltage(&hbuck1)
+				- (int16_t) Buck_GetVoltage(&hbuck1);
+		float du = KI * error;
+
+		DUTY_CYCLE += du;
 
 		if (Buck_GetOutput(&hbuck1) == 1)
 		{
-			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, DUTY_CYCLE);
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
 		}
 		else
 		{
 			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100);
 		}
+
+		//ENC_GetCounter(&henc1);
 
 		HAL_Delay(100);
 

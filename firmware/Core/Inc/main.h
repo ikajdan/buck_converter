@@ -83,6 +83,10 @@ void Error_Handler(void);
 #define BTN_PRESET2_EXTI_IRQn EXTI3_IRQn
 #define VOLTAGE_Pin GPIO_PIN_3
 #define VOLTAGE_GPIO_Port GPIOA
+#define ENC_CLK_Pin GPIO_PIN_6
+#define ENC_CLK_GPIO_Port GPIOA
+#define ENC_DT_Pin GPIO_PIN_7
+#define ENC_DT_GPIO_Port GPIOA
 #define LED_OUT_Pin GPIO_PIN_0
 #define LED_OUT_GPIO_Port GPIOB
 #define LCD_D7_Pin GPIO_PIN_12
