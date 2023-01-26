@@ -29,8 +29,8 @@
 /* USER CODE BEGIN Includes */
 #include "aio.h"
 #include "buck_config.h"
-#include "lcd_config.h"
 #include "encoder_config.h"
+#include "lcd_config.h"
 #include "serial_api_config.h"
 /* USER CODE END Includes */
 
@@ -60,8 +60,8 @@ const unsigned int CURRENT_MULTIPLIER = 10;
 uint16_t ADC1_DATA[2];
 uint16_t DUTY_CYCLE = 0;
 double ENERGY = 0;
+const float KI = 0.01;
 char UART_BUFFER[SERIAL_API_BUF_SIZE];
-float KI = 0.001;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -114,6 +114,7 @@ int main(void)
 	/* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim10); // 1 kHz
 	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1); // 10 kHz
+	ENC_Init(&henc1);
 	LCD_DIO_Init(&hlcd1);
 	HAL_UART_Receive_IT(&huart3, (uint8_t*) UART_BUFFER, SERIAL_API_BUF_SIZE);
 	/* USER CODE END 2 */
@@ -122,36 +123,47 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		//ENC_GetCounter(&henc1);
-		char temp_str[LCD_LINE_BUF_LEN];
+		ENC_GetCounter(&henc1);
+		if (henc1.CounterInc)
+		{
+			Buck_SetTargetVoltage(&hbuck1,
+					Buck_GetTargetVoltage(&hbuck1) + 100);
+		}
+		else if (henc1.CounterDec)
+		{
+			Buck_SetTargetVoltage(&hbuck1,
+					Buck_GetTargetVoltage(&hbuck1) - 100);
+		}
+
+		char lcd_buffer[LCD_LINE_BUF_LEN];
 
 		float U = Buck_GetVoltage(&hbuck1) / 1000.0;
 		float I = Buck_GetCurrent(&hbuck1) / 1000.0;
 		float P = U * I;
-		ENERGY = ENERGY + P * 0.05;
+		ENERGY = ENERGY + P * 0.001;
 
-		snprintf(temp_str, LCD_LINE_LEN, "%5.2f V", U);
+		snprintf(lcd_buffer, LCD_LINE_LEN, "%5.2f V", U);
 		LCD_DIO_SetCursor(&hlcd1, 0, 0);
-		LCD_DIO_printStr(&hlcd1, temp_str);
+		LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-		snprintf(temp_str, LCD_LINE_LEN, "%5.2f A", I);
+		snprintf(lcd_buffer, LCD_LINE_LEN, "%5.2f A", I);
 		LCD_DIO_SetCursor(&hlcd1, 1, 0);
-		LCD_DIO_printStr(&hlcd1, temp_str);
+		LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-		snprintf(temp_str, LCD_LINE_LEN, "%5.2f W", P);
+		snprintf(lcd_buffer, LCD_LINE_LEN, "%5.2f W", P);
 		LCD_DIO_SetCursor(&hlcd1, 0, 8);
-		LCD_DIO_printStr(&hlcd1, temp_str);
+		LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-		snprintf(temp_str, LCD_LINE_LEN, "%5.2f Wh", ENERGY);
+		snprintf(lcd_buffer, LCD_LINE_LEN, "%5.2f Wh", ENERGY);
 		LCD_DIO_SetCursor(&hlcd1, 1, 8);
-		LCD_DIO_printStr(&hlcd1, temp_str);
+		LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-		char msg[SERIAL_API_BUF_SIZE];
-		Serial_API_WriteMsg(&hbuck1, msg);
+		char uart_buffer[SERIAL_API_BUF_SIZE];
+		Serial_API_WriteMsg(&hbuck1, uart_buffer);
+		HAL_UART_Transmit_IT(&huart3, (uint8_t*) uart_buffer,
+				strlen(uart_buffer));
 
-		HAL_UART_Transmit_IT(&huart3, (uint8_t*) msg, strlen(msg));
-
-		HAL_Delay(500);
+		HAL_Delay(250);
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -256,6 +268,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 
 		DUTY_CYCLE += du;
 
+		// Simple regulation
+//		if (Buck_GetVoltage(&hbuck1) < Buck_GetTargetVoltage(&hbuck1))
+//		{
+//			DUTY_CYCLE = DUTY_CYCLE + 1;
+//			if (DUTY_CYCLE > 100)
+//			{
+//				DUTY_CYCLE = 100;
+//			}
+//		}
+//		else
+//		{
+//			DUTY_CYCLE = DUTY_CYCLE - 1;
+//			if (DUTY_CYCLE < 0)
+//			{
+//				DUTY_CYCLE = 0;
+//			}
+//		}
+
 		if (Buck_GetOutput(&hbuck1) == 1)
 		{
 			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
@@ -284,19 +314,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	}
 	else if (GPIO_Pin == BTN_PRESET1_Pin)
 	{
-		Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) - 100);
+		Buck_SetTargetVoltage(&hbuck1, 1500);
 	}
 	else if (GPIO_Pin == BTN_PRESET2_Pin)
 	{
-		Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) + 100);
+		Buck_SetTargetVoltage(&hbuck1, 3300);
 	}
 	else if (GPIO_Pin == BTN_PRESET3_Pin)
 	{
-		Buck_SetCurrentLimit(&hbuck1, Buck_GetCurrentLimit(&hbuck1) - 100);
+		Buck_SetTargetVoltage(&hbuck1, 5000);
 	}
 	else if (GPIO_Pin == BTN_PRESET4_Pin)
 	{
-		Buck_SetCurrentLimit(&hbuck1, Buck_GetCurrentLimit(&hbuck1) + 100);
+		Buck_SetTargetVoltage(&hbuck1, 12000);
 	}
 }
 

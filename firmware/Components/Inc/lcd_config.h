@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file    lcd_config.h
-  * @author  AW
-  * @version V2.0
-  * @date    30-Oct-2020
-  * @brief   Simple HD44780 driver library for STM32F7 configuration file.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    lcd_config.h
+ * @author  AW
+ * @version V2.0
+ * @date    30-Oct-2020
+ * @brief   Simple HD44780 driver library for STM32F7 configuration file.
+ *
+ ******************************************************************************
+ */
 #ifndef INC_LCD_CONFIG_H_
 #define INC_LCD_CONFIG_H_
 

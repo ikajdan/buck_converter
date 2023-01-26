@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file     : dio.c
-  * @author   : AW    Adrian.Wojcik@put.poznan.pl
-  * @version  : 1.3.0
-  * @date     : Nov 27, 2022
-  * @brief    : Digital inputs/outputs components driver.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file     : dio.c
+ * @author   : AW    Adrian.Wojcik@put.poznan.pl
+ * @version  : 1.3.0
+ * @date     : Nov 27, 2022
+ * @brief    : Digital inputs/outputs components driver.
+ *
+ ******************************************************************************
+ */
 
 /* Private includes ----------------------------------------------------------*/
 #include "dio.h"
@@ -34,9 +34,9 @@
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_WriteLow(const DIO_Handle_TypeDef* hdio)
+void DIO_WriteLow(const DIO_Handle_TypeDef *hdio)
 {
-  HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_RESET);
 }
 
 /**
@@ -44,9 +44,9 @@ void DIO_WriteLow(const DIO_Handle_TypeDef* hdio)
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_WriteHigh(const DIO_Handle_TypeDef* hdio)
+void DIO_WriteHigh(const DIO_Handle_TypeDef *hdio)
 {
-  HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_SET);
 }
 
 /**
@@ -55,9 +55,9 @@ void DIO_WriteHigh(const DIO_Handle_TypeDef* hdio)
  * @param[in] state : Digital output state (0 or 1)
  * @retval None
  */
-void DIO_Write(const DIO_Handle_TypeDef* hdio, _Bool state)
+void DIO_Write(const DIO_Handle_TypeDef *hdio, _Bool state)
 {
-  HAL_GPIO_WritePin(hdio->Port, hdio->Pin, (GPIO_PinState)state);
+	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, (GPIO_PinState) state);
 }
 
 /**
@@ -65,9 +65,9 @@ void DIO_Write(const DIO_Handle_TypeDef* hdio, _Bool state)
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_Toggle(const DIO_Handle_TypeDef* hdio)
+void DIO_Toggle(const DIO_Handle_TypeDef *hdio)
 {
-  HAL_GPIO_TogglePin(hdio->Port, hdio->Pin);
+	HAL_GPIO_TogglePin(hdio->Port, hdio->Pin);
 }
 
 /**
@@ -75,7 +75,7 @@ void DIO_Toggle(const DIO_Handle_TypeDef* hdio)
  * @param[in] hdio  : Digital I/O handler
  * @retval Input state (0 or 1)
  */
-_Bool DIO_Read(const DIO_Handle_TypeDef* hdio)
+_Bool DIO_Read(const DIO_Handle_TypeDef *hdio)
 {
-  return (_Bool)HAL_GPIO_ReadPin(hdio->Port, hdio->Pin);
+	return (_Bool) HAL_GPIO_ReadPin(hdio->Port, hdio->Pin);
 }

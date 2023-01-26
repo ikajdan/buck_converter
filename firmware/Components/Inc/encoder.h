@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file		  : encoder.h
-  * @author  	: AW		Adrian.Wojcik@put.poznan.pl
-  * @version 	: 1.3.0
-  * @date    	: Oct 19, 2022
-  * @brief   	: Rotary encoder
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file		: encoder.h
+ * @author  	: AW		Adrian.Wojcik@put.poznan.pl
+ * @version 	: 1.3.0
+ * @date    	: Oct 19, 2022
+ * @brief   	: Rotary encoder
+ *
+ ******************************************************************************
+ */
 #ifndef INC_ENCODER_H_
 #define INC_ENCODER_H_
 
@@ -22,14 +22,15 @@
 
 #define ENC_TimerType TIM_HandleTypeDef*
 
-typedef struct {
-  ENC_TimerType Timer;
-  uint32_t Counter;
-  uint32_t CounterMax;
-  uint32_t CounterMin;
-  _Bool CounterInc;
-  _Bool CounterDec;
-  uint32_t TicksPerStep;
+typedef struct
+{
+	ENC_TimerType Timer;
+	uint32_t Counter;
+	uint32_t CounterMax;
+	uint32_t CounterMin;
+	_Bool CounterInc;
+	_Bool CounterDec;
+	uint32_t TicksPerStep;
 } ENC_Handle_TypeDef;
 
 #else
@@ -59,6 +60,17 @@ typedef struct {
 /* Public variables ----------------------------------------------------------*/
 
 /* Public function prototypes ------------------------------------------------*/
+/**
+ * @brief Re-maps a number from one range to another.
+ * @param[in] value       : the number to map.
+ * @param[in] fromLow  : the lower bound of the value’s current range.
+ * @param[in] fromHigh  : the upper bound of the value’s current range.
+ * @param[in] toLow : the lower bound of the value’s target range.
+ * @param[in] toHigh : the upper bound of the value’s target range.
+ * @return Output voltage percent [0-100]
+ */
+long map(long value, long fromLow, long fromHigh, long toLow, long toHigh);
+
 #ifdef ENC_HARDWARE_COUNTER
 
 /**
@@ -66,21 +78,22 @@ typedef struct {
  * @param[in] henc : Encoder handler
  * @return None
  */
-void ENC_Init(ENC_Handle_TypeDef* henc);
+void ENC_Init(ENC_Handle_TypeDef *henc);
 
 /**
  * @brief Rotary quadrature encoder hardware counter read.
  * @param[in] henc : Encoder handler
  * @return Current counter value
  */
-uint32_t ENC_GetCounter(ENC_Handle_TypeDef* henc);
+uint32_t ENC_GetCounter(ENC_Handle_TypeDef *henc);
 
 /**
- * @brief Rotary quadrature encoder hardware counter read.
+ * @brief Rotary quadrature encoder hardware counter write.
  * @param[in] henc    : Encoder handler
- * @param[in] counter : Current counter value
+ * @param[in] counter : Counter value
+ * @return None
  */
-void ENC_SetCounter(ENC_Handle_TypeDef* henc, uint32_t counter);
+void ENC_SetCounter(ENC_Handle_TypeDef *henc, uint32_t counter);
 
 #else
 

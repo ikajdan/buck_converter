@@ -18,7 +18,7 @@
 /* Public typedef ------------------------------------------------------------*/
 
 /* Public define -------------------------------------------------------------*/
-#define SERIAL_API_BUF_SIZE 256
+#define SERIAL_API_BUF_SIZE 128
 
 /* Public macro --------------------------------------------------------------*/
 
@@ -31,7 +31,7 @@
  * @param[in] msg	: Input message
  * @retval Parsing status (0 if successful, <0 otherwise)
  */
-int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, const char *msg);
+int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, char *msg);
 
 /**
  * @brief Writes serial API message from the handler

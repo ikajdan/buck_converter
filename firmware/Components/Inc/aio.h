@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file     : dio.h
-  * @author   : AW    Adrian.Wojcik@put.poznan.pl
-  * @version  : 1.3.0
-  * @date     : Nov 27, 2022
-  * @brief    : Analog inputs/outputs components header.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file     : dio.h
+ * @author   : AW    Adrian.Wojcik@put.poznan.pl
+ * @version  : 1.3.0
+ * @date     : Nov 27, 2022
+ * @brief    : Analog inputs/outputs components header.
+ *
+ ******************************************************************************
+ */
 
 #ifndef INC_AIO_H_
 #define INC_AIO_H_

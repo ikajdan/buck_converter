@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file		: btn_config.c
-  * @author  	: AW		Adrian.Wojcik@put.poznan.pl
-  * @version 	: 1.3.0
-  * @date    	: Oct 19, 2022
-  * @brief   	: Button & switch components configuration file
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file		: btn_config.c
+ * @author  	: AW		Adrian.Wojcik@put.poznan.pl
+ * @version 	: 1.3.0
+ * @date    	: Oct 19, 2022
+ * @brief   	: Button & switch components configuration file
+ *
+ ******************************************************************************
+ */
 
 /* Private includes ----------------------------------------------------------*/
 #include "btn.h"

@@ -1,14 +1,14 @@
 /**
-  ******************************************************************************
-  * @file     : lcd.h
-  * @author   : Olivier Van den Eede [ https://github.com/4ilo/HD44780-Stm32HAL ]
-  * @author   : AW    Adrian.Wojcik@put.poznan.pl
-  * @version  : 3.0
-  * @date     : 10-Jun-2018
-  * @brief    : Simple HD44780 driver library for STM32F7.
-  *             NOTE!: This code provides only WRITE features, no READ features.
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file     : lcd.h
+ * @author   : Olivier Van den Eede [ https://github.com/4ilo/HD44780-Stm32HAL ]
+ * @author   : AW    Adrian.Wojcik@put.poznan.pl
+ * @version  : 3.0
+ * @date     : 10-Jun-2018
+ * @brief    : Simple HD44780 driver library for STM32F7.
+ *             NOTE!: This code provides only WRITE features, no READ features.
+ ******************************************************************************
+ */
 #ifndef INC_LCD_H_
 #define INC_LCD_H_
 
@@ -44,18 +44,19 @@
 #define LCD_TimerType void*
 #endif
 
-typedef enum {
-  LCD_4_BIT_MODE,
-  LCD_8_BIT_MODE
+typedef enum
+{
+	LCD_4_BIT_MODE, LCD_8_BIT_MODE
 } LCD_ModeTypeDef;
 
-typedef struct {
-  DIO_Handle_TypeDef* DATA;
-  DIO_Handle_TypeDef RS;
-  DIO_Handle_TypeDef E;
-  LCD_ModeTypeDef Mode;
-  LCD_TimerType Timer;
-  _Bool IsInitialized;
+typedef struct
+{
+	DIO_Handle_TypeDef *DATA;
+	DIO_Handle_TypeDef RS;
+	DIO_Handle_TypeDef E;
+	LCD_ModeTypeDef Mode;
+	LCD_TimerType Timer;
+	_Bool IsInitialized;
 } LCD_DIO_HandleTypeDef;
 
 /* Define --------------------------------------------------------------------*/
@@ -103,7 +104,7 @@ typedef struct {
  * @param[in] hlcd : LCD handler
  * @return None 
  */
-void LCD_DIO_Init(LCD_DIO_HandleTypeDef* hlcd);
+void LCD_DIO_Init(LCD_DIO_HandleTypeDef *hlcd);
 
 /**
  * @brief Write a decimal number on the current position.
@@ -111,7 +112,7 @@ void LCD_DIO_Init(LCD_DIO_HandleTypeDef* hlcd);
  * @param[in] number : Decimal number, max. 10 digits
  * @return None 
  */
-void LCD_DIO_printDecInt(LCD_DIO_HandleTypeDef* hlcd, int number);
+void LCD_DIO_printDecInt(LCD_DIO_HandleTypeDef *hlcd, int number);
 
 /**
  * @brief Write a hexadecimal number on the current position.
@@ -119,7 +120,7 @@ void LCD_DIO_printDecInt(LCD_DIO_HandleTypeDef* hlcd, int number);
  * @param[in] number : Hexadecimal number, max. 10 digits
  * @return None 
  */
-void LCD_DIO_printHexInt(LCD_DIO_HandleTypeDef* hlcd, int number);
+void LCD_DIO_printHexInt(LCD_DIO_HandleTypeDef *hlcd, int number);
 
 /**
  * @brief Write a string on the current position.
@@ -127,7 +128,7 @@ void LCD_DIO_printHexInt(LCD_DIO_HandleTypeDef* hlcd, int number);
  * @param[in] str  : Null-terminated string
  * @return None 
  */
-void LCD_DIO_printStr(LCD_DIO_HandleTypeDef* hlcd, char* str);
+void LCD_DIO_printStr(LCD_DIO_HandleTypeDef *hlcd, char *str);
 
 /**
  * @brief Set the cursor position.
@@ -136,14 +137,14 @@ void LCD_DIO_printStr(LCD_DIO_HandleTypeDef* hlcd, char* str);
  * @param[in] col  : Display column: 0 to 15 (16 character display) or 19 (20 character display)
  * @return None 
  */
-void LCD_DIO_SetCursor(LCD_DIO_HandleTypeDef* hlcd, uint8_t row, uint8_t col);
+void LCD_DIO_SetCursor(LCD_DIO_HandleTypeDef *hlcd, uint8_t row, uint8_t col);
 
 /**
  * @brief Clear the screen.
  * @param[in] hlcd : LCD handler
  * @return None 
  */
-void LCD_DIO_Clear(LCD_DIO_HandleTypeDef * lcd);
+void LCD_DIO_Clear(LCD_DIO_HandleTypeDef *lcd);
 
 /**
  * @brief Clear the screen.
@@ -152,7 +153,8 @@ void LCD_DIO_Clear(LCD_DIO_HandleTypeDef * lcd);
  * @param[in] bitmap : Defined character array @see HD44780 technical note.
  * @return None 
  */
-void LCD_DIO_DefineChar(LCD_DIO_HandleTypeDef* lcd, uint8_t code, uint8_t bitmap[]);
+void LCD_DIO_DefineChar(LCD_DIO_HandleTypeDef *lcd, uint8_t code,
+		uint8_t bitmap[]);
 
 #ifdef LCD_PRINTF_ENABLE
 /**
@@ -162,7 +164,7 @@ void LCD_DIO_DefineChar(LCD_DIO_HandleTypeDef* lcd, uint8_t code, uint8_t bitmap
  * @param[in] ...    : Variadic arguments
  * @return None
  */
-void LCD_DIO_printf(LCD_DIO_HandleTypeDef * lcd, const char* format, ...);
+void LCD_DIO_printf(LCD_DIO_HandleTypeDef *lcd, const char *format, ...);
 #endif
 
 #endif /* INC_LCD_H_ */

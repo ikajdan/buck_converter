@@ -1,13 +1,13 @@
 /**
-  ******************************************************************************
-  * @file		  : encoder_config.h
-  * @author  	: AW		Adrian.Wojcik@put.poznan.pl
-  * @version 	: 1.3.0
-  * @date    	: Oct 19, 2022
-  * @brief   	: Simple rotary encoder driver library configuration file
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file		: encoder_config.h
+ * @author  	: AW		Adrian.Wojcik@put.poznan.pl
+ * @version 	: 1.3.0
+ * @date    	: Oct 19, 2022
+ * @brief   	: Simple rotary encoder driver library configuration file
+ *
+ ******************************************************************************
+ */
 #ifndef INC_ENCODER_CONFIG_H_
 #define INC_ENCODER_CONFIG_H_
 

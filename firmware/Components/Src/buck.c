@@ -11,6 +11,7 @@
 
 /* Includes ----------------------------------------------------------*/
 #include "gpio.h"
+#include "tim.h"
 #include "buck.h"
 
 /* Typedef -----------------------------------------------------------*/
@@ -20,7 +21,7 @@
 /* Macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-
+int8_t COUNTER;
 /* Public variables ----------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
@@ -132,10 +133,13 @@ _Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck)
  */
 void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck)
 {
-	if(hbuck->Output == 1) {
+	if (hbuck->Output == 1)
+	{
 		hbuck->Output = 0;
 		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 0);
-	} else {
+	}
+	else
+	{
 		hbuck->Output = 1;
 		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 1);
 	}
