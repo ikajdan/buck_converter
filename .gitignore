@@ -1,8 +1,8 @@
 # STM32CubeIDE
-/firmware/.metadata
-/firmware/.settings
-/firmware/[Rr]elease
-/firmware/[Dd]ebug
+/firmware/.settings/
+/firmware/Release/
+/firmware/Debug/
+/firmware/Drivers/
 /firmware/*.launch
 
 # KiCad
@@ -10,3 +10,9 @@
 /hardware/*.kicad_prl
 /hardware/fp-info-cache
 /hardware/\#auto_saved_files\#
+
+# Interactive HTML BOM
+/hardware/bom/
+
+# Fabrication Toolkit
+/hardware/production/
