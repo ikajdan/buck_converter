@@ -34,9 +34,8 @@
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_WriteLow(const DIO_Handle_TypeDef *hdio)
-{
-	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_RESET);
+void DIO_WriteLow(const DIO_Handle_TypeDef *hdio) {
+    HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_RESET);
 }
 
 /**
@@ -44,9 +43,8 @@ void DIO_WriteLow(const DIO_Handle_TypeDef *hdio)
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_WriteHigh(const DIO_Handle_TypeDef *hdio)
-{
-	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_SET);
+void DIO_WriteHigh(const DIO_Handle_TypeDef *hdio) {
+    HAL_GPIO_WritePin(hdio->Port, hdio->Pin, GPIO_PIN_SET);
 }
 
 /**
@@ -55,9 +53,8 @@ void DIO_WriteHigh(const DIO_Handle_TypeDef *hdio)
  * @param[in] state : Digital output state (0 or 1)
  * @retval None
  */
-void DIO_Write(const DIO_Handle_TypeDef *hdio, _Bool state)
-{
-	HAL_GPIO_WritePin(hdio->Port, hdio->Pin, (GPIO_PinState) state);
+void DIO_Write(const DIO_Handle_TypeDef *hdio, _Bool state) {
+    HAL_GPIO_WritePin(hdio->Port, hdio->Pin, (GPIO_PinState) state);
 }
 
 /**
@@ -65,9 +62,8 @@ void DIO_Write(const DIO_Handle_TypeDef *hdio, _Bool state)
  * @param[in] hdio  : Digital I/O handler
  * @retval None
  */
-void DIO_Toggle(const DIO_Handle_TypeDef *hdio)
-{
-	HAL_GPIO_TogglePin(hdio->Port, hdio->Pin);
+void DIO_Toggle(const DIO_Handle_TypeDef *hdio) {
+    HAL_GPIO_TogglePin(hdio->Port, hdio->Pin);
 }
 
 /**
@@ -75,7 +71,6 @@ void DIO_Toggle(const DIO_Handle_TypeDef *hdio)
  * @param[in] hdio  : Digital I/O handler
  * @retval Input state (0 or 1)
  */
-_Bool DIO_Read(const DIO_Handle_TypeDef *hdio)
-{
-	return (_Bool) HAL_GPIO_ReadPin(hdio->Port, hdio->Pin);
+_Bool DIO_Read(const DIO_Handle_TypeDef *hdio) {
+    return (_Bool) HAL_GPIO_ReadPin(hdio->Port, hdio->Pin);
 }

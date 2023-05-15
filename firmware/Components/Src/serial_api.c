@@ -69,40 +69,36 @@ jsmntok_t JSMN_TOK[64];
  * @param[in] msg	: Input message
  * @retval Parsing status (0 if successful, <0 otherwise)
  */
-int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, char *msg)
-{
-	jsmn_init(&JSMN_PARSER);
-	int r = jsmn_parse(&JSMN_PARSER, msg, strlen(msg), JSMN_TOK,
-			sizeof(JSMN_TOK) / sizeof(JSMN_TOK[0]));
+int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, char *msg) {
+    jsmn_init(&JSMN_PARSER);
+    int r = jsmn_parse(&JSMN_PARSER, msg, strlen(msg), JSMN_TOK, sizeof(JSMN_TOK) / sizeof(JSMN_TOK[0]));
 
-	if (r < 1 || JSMN_TOK[0].type != JSMN_OBJECT)
-	{
-		// The top-level element is not an object
-		return -1;
-	}
+    if (r < 1 || JSMN_TOK[0].type != JSMN_OBJECT) {
+        // The top-level element is not an object
+        return -1;
+    }
 
-	if (r < 7)
-	{
-		// Too few JSON token. Bailing out.
-		return -1;
-	}
+    if (r < 7) {
+        // Too few JSON token. Bailing out.
+        return -1;
+    }
 
-	char tv[16];
-	memcpy(tv, msg + JSMN_TOK[2].start, JSMN_TOK[2].end - JSMN_TOK[2].start);
-	int tv_i = atoi(tv);
-	hbuck->TargetVoltage = tv_i;
+    char tv[16];
+    memcpy(tv, msg + JSMN_TOK[2].start, JSMN_TOK[2].end - JSMN_TOK[2].start);
+    int tv_i = atoi(tv);
+    hbuck->TargetVoltage = tv_i;
 
-	char cl[16];
-	memcpy(cl, msg + JSMN_TOK[4].start, JSMN_TOK[4].end - JSMN_TOK[4].start);
-	int cl_i = atoi(cl);
-	hbuck->CurrentLimit = cl_i;
+    char cl[16];
+    memcpy(cl, msg + JSMN_TOK[4].start, JSMN_TOK[4].end - JSMN_TOK[4].start);
+    int cl_i = atoi(cl);
+    hbuck->CurrentLimit = cl_i;
 
-	char o[16];
-	memcpy(o, msg + JSMN_TOK[6].start, JSMN_TOK[6].end - JSMN_TOK[6].start);
-	int o_i = atoi(o);
-	hbuck->Output = o_i;
+    char o[16];
+    memcpy(o, msg + JSMN_TOK[6].start, JSMN_TOK[6].end - JSMN_TOK[6].start);
+    int o_i = atoi(o);
+    hbuck->Output = o_i;
 
-	return 0;
+    return 0;
 }
 
 /**
@@ -111,10 +107,7 @@ int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, char *msg)
  * @param[out] msg	: Output message buffer
  * @retval None
  */
-void Serial_API_WriteMsg(Buck_Handle_TypeDef *hbuck, char *msg)
-{
-	snprintf(msg, SERIAL_API_BUF_SIZE,
-			"{\"Voltage\": %d,\"Current\": %d,\"TargetVoltage\": %d,\"CurrentLimit\": %d,\"OutputMode\": %d,\"Output\": %d}\n",
-			hbuck->Voltage, hbuck->Current, hbuck->TargetVoltage,
-			hbuck->CurrentLimit, hbuck->OutputMode, hbuck->Output);
+void Serial_API_WriteMsg(Buck_Handle_TypeDef *hbuck, char *msg) {
+    snprintf(msg, SERIAL_API_BUF_SIZE, "{\"Voltage\": %d,\"Current\": %d,\"TargetVoltage\": %d,\"CurrentLimit\": %d,\"OutputMode\": %d,\"Output\": %d}\n",
+            hbuck->Voltage, hbuck->Current, hbuck->TargetVoltage, hbuck->CurrentLimit, hbuck->OutputMode, hbuck->Output);
 }

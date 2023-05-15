@@ -17,14 +17,13 @@
 /**
  * @brief Buck handle structure definition
  */
-typedef struct
-{
-	unsigned int Voltage;
-	unsigned int Current;
-	unsigned int TargetVoltage;
-	unsigned int CurrentLimit;
-	_Bool OutputMode; // TODO: Use enums here
-	_Bool Output;
+typedef struct {
+    unsigned int Voltage;
+    unsigned int Current;
+    unsigned int TargetVoltage;
+    unsigned int CurrentLimit;
+    _Bool OutputMode; // TODO: Use enums here
+    _Bool Output;
 } Buck_Handle_TypeDef;
 
 /* Public define -------------------------------------------------------------*/
@@ -62,8 +61,7 @@ unsigned int Buck_GetTargetVoltage(Buck_Handle_TypeDef *hbuck);
  * @param[in] targetVoltage	: Voltage in mV
  * @retval None
  */
-void Buck_SetTargetVoltage(Buck_Handle_TypeDef *hbuck,
-		unsigned int targetVoltage);
+void Buck_SetTargetVoltage(Buck_Handle_TypeDef *hbuck, unsigned int targetVoltage);
 
 /**
  * @brief Returns measured current in mA

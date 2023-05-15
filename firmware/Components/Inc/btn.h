@@ -18,24 +18,20 @@
 /**
  * @brief GPIO (On/Off) button handle structure definition
  */
-typedef enum
-{
-	BTN_PULL_DOWN, BTN_PULL_UP
+typedef enum {
+    BTN_PULL_DOWN, BTN_PULL_UP
 } BTN_PULL_TYPE_TypeDef;
-typedef enum
-{
-	BTN_RELEASED = 0, BTN_PRESSED = 1
+typedef enum {
+    BTN_RELEASED = 0, BTN_PRESSED = 1
 } BTN_DIO_State_TypeDef;
-typedef enum
-{
-	BTN_NO_EDGE, BTN_PRESSED_EDGE, BTN_RELEASED_EDGE
+typedef enum {
+    BTN_NO_EDGE, BTN_PRESSED_EDGE, BTN_RELEASED_EDGE
 } BTN_DIO_Edge_TypeDef;
 
-typedef struct
-{
-	DIO_Handle_TypeDef Input;
-	BTN_PULL_TYPE_TypeDef Pull;
-	BTN_DIO_State_TypeDef PrevState;
+typedef struct {
+    DIO_Handle_TypeDef Input;
+    BTN_PULL_TYPE_TypeDef Pull;
+    BTN_DIO_State_TypeDef PrevState;
 } BTN_DIO_Handle_TypeDef;
 
 /* Public define -------------------------------------------------------------*/

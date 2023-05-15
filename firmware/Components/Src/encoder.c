@@ -36,9 +36,8 @@
  * @param[in] toHigh : the upper bound of the value’s target range.
  * @return Output voltage percent [0-100]
  */
-long map(long value, long fromLow, long fromHigh, long toLow, long toHigh)
-{
-	return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
+long map(long value, long fromLow, long fromHigh, long toLow, long toHigh) {
+    return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
 }
 
 #ifdef ENC_HARDWARE_COUNTER
@@ -48,9 +47,8 @@ long map(long value, long fromLow, long fromHigh, long toLow, long toHigh)
  * @param[in] henc : Encoder handler
  * @return None
  */
-void ENC_Init(ENC_Handle_TypeDef *henc)
-{
-	HAL_TIM_Encoder_Start(henc->Timer, TIM_CHANNEL_ALL);
+void ENC_Init(ENC_Handle_TypeDef *henc) {
+    HAL_TIM_Encoder_Start(henc->Timer, TIM_CHANNEL_ALL);
 }
 
 /**
@@ -58,13 +56,12 @@ void ENC_Init(ENC_Handle_TypeDef *henc)
  * @param[in] henc : Encoder handler
  * @return Current counter value
  */
-uint32_t ENC_GetCounter(ENC_Handle_TypeDef *henc)
-{
-	uint32_t cnt = henc->Counter;
-	henc->Counter = __HAL_TIM_GET_COUNTER(henc->Timer);
-	henc->CounterInc = (henc->Counter > cnt);
-	henc->CounterDec = (henc->Counter < cnt);
-	return henc->Counter / henc->TicksPerStep;
+uint32_t ENC_GetCounter(ENC_Handle_TypeDef *henc) {
+    uint32_t cnt = henc->Counter;
+    henc->Counter = __HAL_TIM_GET_COUNTER(henc->Timer);
+    henc->CounterInc = (henc->Counter > cnt);
+    henc->CounterDec = (henc->Counter < cnt);
+    return henc->Counter / henc->TicksPerStep;
 }
 
 /**
@@ -73,10 +70,9 @@ uint32_t ENC_GetCounter(ENC_Handle_TypeDef *henc)
  * @param[in] counter : Counter value
  * @return None
  */
-void ENC_SetCounter(ENC_Handle_TypeDef *henc, uint32_t counter)
-{
-	henc->Counter = counter * henc->TicksPerStep;
-	__HAL_TIM_SET_COUNTER(henc->Timer, henc->Counter);
+void ENC_SetCounter(ENC_Handle_TypeDef *henc, uint32_t counter) {
+    henc->Counter = counter * henc->TicksPerStep;
+    __HAL_TIM_SET_COUNTER(henc->Timer, henc->Counter);
 }
 
 #else

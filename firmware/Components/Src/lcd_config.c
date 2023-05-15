@@ -25,16 +25,14 @@
 /* Macro ---------------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-DIO_Handle_TypeDef __hlcd1_DATA[] =
-{
+DIO_Handle_TypeDef __hlcd1_DATA[] = {
 DIO_INIT_HANDLE(LCD_D4),
 DIO_INIT_HANDLE(LCD_D5),
 DIO_INIT_HANDLE(LCD_D6),
 DIO_INIT_HANDLE(LCD_D7) };
 
 /* Public variables ----------------------------------------------------------*/
-LCD_DIO_HandleTypeDef hlcd1 =
-{ .DATA = __hlcd1_DATA, .RS = DIO_INIT_HANDLE(LCD_RS), .E =
+LCD_DIO_HandleTypeDef hlcd1 = { .DATA = __hlcd1_DATA, .RS = DIO_INIT_HANDLE(LCD_RS), .E =
 DIO_INIT_HANDLE(LCD_EN), .Mode = LCD_4_BIT_MODE, .Timer = &htim7 };
 
 /* Private function ----------------------------------------------------------*/

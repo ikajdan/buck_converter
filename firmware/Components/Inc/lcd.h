@@ -44,19 +44,17 @@
 #define LCD_TimerType void*
 #endif
 
-typedef enum
-{
-	LCD_4_BIT_MODE, LCD_8_BIT_MODE
+typedef enum {
+    LCD_4_BIT_MODE, LCD_8_BIT_MODE
 } LCD_ModeTypeDef;
 
-typedef struct
-{
-	DIO_Handle_TypeDef *DATA;
-	DIO_Handle_TypeDef RS;
-	DIO_Handle_TypeDef E;
-	LCD_ModeTypeDef Mode;
-	LCD_TimerType Timer;
-	_Bool IsInitialized;
+typedef struct {
+    DIO_Handle_TypeDef *DATA;
+    DIO_Handle_TypeDef RS;
+    DIO_Handle_TypeDef E;
+    LCD_ModeTypeDef Mode;
+    LCD_TimerType Timer;
+    _Bool IsInitialized;
 } LCD_DIO_HandleTypeDef;
 
 /* Define --------------------------------------------------------------------*/
@@ -102,7 +100,7 @@ typedef struct
  * @brief LCD initialization procedure.
  * @note Cursor off, Cursor increment on, No blink @see HD44780 technical note.
  * @param[in] hlcd : LCD handler
- * @return None 
+ * @return None
  */
 void LCD_DIO_Init(LCD_DIO_HandleTypeDef *hlcd);
 
@@ -110,7 +108,7 @@ void LCD_DIO_Init(LCD_DIO_HandleTypeDef *hlcd);
  * @brief Write a decimal number on the current position.
  * @param[in] hlcd   : LCD handler
  * @param[in] number : Decimal number, max. 10 digits
- * @return None 
+ * @return None
  */
 void LCD_DIO_printDecInt(LCD_DIO_HandleTypeDef *hlcd, int number);
 
@@ -118,7 +116,7 @@ void LCD_DIO_printDecInt(LCD_DIO_HandleTypeDef *hlcd, int number);
  * @brief Write a hexadecimal number on the current position.
  * @param[in] hlcd   : LCD handler
  * @param[in] number : Hexadecimal number, max. 10 digits
- * @return None 
+ * @return None
  */
 void LCD_DIO_printHexInt(LCD_DIO_HandleTypeDef *hlcd, int number);
 
@@ -126,7 +124,7 @@ void LCD_DIO_printHexInt(LCD_DIO_HandleTypeDef *hlcd, int number);
  * @brief Write a string on the current position.
  * @param[in] hlcd : LCD handler
  * @param[in] str  : Null-terminated string
- * @return None 
+ * @return None
  */
 void LCD_DIO_printStr(LCD_DIO_HandleTypeDef *hlcd, char *str);
 
@@ -135,14 +133,14 @@ void LCD_DIO_printStr(LCD_DIO_HandleTypeDef *hlcd, char *str);
  * @param[in] hlcd : LCD handler
  * @param[in] row  : Display row (line): 0 to N
  * @param[in] col  : Display column: 0 to 15 (16 character display) or 19 (20 character display)
- * @return None 
+ * @return None
  */
 void LCD_DIO_SetCursor(LCD_DIO_HandleTypeDef *hlcd, uint8_t row, uint8_t col);
 
 /**
  * @brief Clear the screen.
  * @param[in] hlcd : LCD handler
- * @return None 
+ * @return None
  */
 void LCD_DIO_Clear(LCD_DIO_HandleTypeDef *lcd);
 
@@ -151,10 +149,9 @@ void LCD_DIO_Clear(LCD_DIO_HandleTypeDef *lcd);
  * @param[in] hlcd   : LCD handler
  * @param[in] code   : Defined character code in display memory @see HD44780 technical note.
  * @param[in] bitmap : Defined character array @see HD44780 technical note.
- * @return None 
+ * @return None
  */
-void LCD_DIO_DefineChar(LCD_DIO_HandleTypeDef *lcd, uint8_t code,
-		uint8_t bitmap[]);
+void LCD_DIO_DefineChar(LCD_DIO_HandleTypeDef *lcd, uint8_t code, uint8_t bitmap[]);
 
 #ifdef LCD_PRINTF_ENABLE
 /**

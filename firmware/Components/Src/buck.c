@@ -36,9 +36,8 @@ int8_t COUNTER;
  * @param[in] hbuck : Buck handler
  * @retval Voltage in mV
  */
-unsigned int Buck_GetVoltage(Buck_Handle_TypeDef *hbuck)
-{
-	return hbuck->Voltage;
+unsigned int Buck_GetVoltage(Buck_Handle_TypeDef *hbuck) {
+    return hbuck->Voltage;
 }
 
 /**
@@ -47,9 +46,8 @@ unsigned int Buck_GetVoltage(Buck_Handle_TypeDef *hbuck)
  * @param[in] targetVoltage	: Voltage in mV
  * @retval None
  */
-void Buck_SetVoltage(Buck_Handle_TypeDef *hbuck, unsigned int voltage)
-{
-	hbuck->Voltage = voltage;
+void Buck_SetVoltage(Buck_Handle_TypeDef *hbuck, unsigned int voltage) {
+    hbuck->Voltage = voltage;
 }
 
 /**
@@ -57,9 +55,8 @@ void Buck_SetVoltage(Buck_Handle_TypeDef *hbuck, unsigned int voltage)
  * @param[in] hbuck : Buck handler
  * @retval Voltage in mV
  */
-unsigned int Buck_GetTargetVoltage(Buck_Handle_TypeDef *hbuck)
-{
-	return hbuck->TargetVoltage;
+unsigned int Buck_GetTargetVoltage(Buck_Handle_TypeDef *hbuck) {
+    return hbuck->TargetVoltage;
 }
 
 /**
@@ -68,10 +65,8 @@ unsigned int Buck_GetTargetVoltage(Buck_Handle_TypeDef *hbuck)
  * @param[in] targetVoltage	: Voltage in mV
  * @retval None
  */
-void Buck_SetTargetVoltage(Buck_Handle_TypeDef *hbuck,
-		unsigned int targetVoltage)
-{
-	hbuck->TargetVoltage = targetVoltage;
+void Buck_SetTargetVoltage(Buck_Handle_TypeDef *hbuck, unsigned int targetVoltage) {
+    hbuck->TargetVoltage = targetVoltage;
 }
 
 /**
@@ -79,9 +74,8 @@ void Buck_SetTargetVoltage(Buck_Handle_TypeDef *hbuck,
  * @param[in] hbuck : Buck handler
  * @retval Current in mA
  */
-unsigned int Buck_GetCurrent(Buck_Handle_TypeDef *hbuck)
-{
-	return hbuck->Current;
+unsigned int Buck_GetCurrent(Buck_Handle_TypeDef *hbuck) {
+    return hbuck->Current;
 }
 
 /**
@@ -90,9 +84,8 @@ unsigned int Buck_GetCurrent(Buck_Handle_TypeDef *hbuck)
  * @param[in] current	: Current in mA
  * @retval None
  */
-void Buck_SetCurrent(Buck_Handle_TypeDef *hbuck, unsigned int current)
-{
-	hbuck->Current = current;
+void Buck_SetCurrent(Buck_Handle_TypeDef *hbuck, unsigned int current) {
+    hbuck->Current = current;
 }
 
 /**
@@ -100,9 +93,8 @@ void Buck_SetCurrent(Buck_Handle_TypeDef *hbuck, unsigned int current)
  * @param[in] hbuck : Buck handler
  * @retval Current in mA
  */
-unsigned int Buck_GetCurrentLimit(Buck_Handle_TypeDef *hbuck)
-{
-	return hbuck->CurrentLimit;
+unsigned int Buck_GetCurrentLimit(Buck_Handle_TypeDef *hbuck) {
+    return hbuck->CurrentLimit;
 }
 
 /**
@@ -111,9 +103,8 @@ unsigned int Buck_GetCurrentLimit(Buck_Handle_TypeDef *hbuck)
  * @param[in] currentLimit	: Current in mA
  * @retval None
  */
-void Buck_SetCurrentLimit(Buck_Handle_TypeDef *hbuck, unsigned int currentLimit)
-{
-	hbuck->CurrentLimit = currentLimit;
+void Buck_SetCurrentLimit(Buck_Handle_TypeDef *hbuck, unsigned int currentLimit) {
+    hbuck->CurrentLimit = currentLimit;
 }
 
 /**
@@ -121,9 +112,8 @@ void Buck_SetCurrentLimit(Buck_Handle_TypeDef *hbuck, unsigned int currentLimit)
  * @param[in] hbuck : Buck handler
  * @retval Output state (0 or 1)
  */
-_Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck)
-{
-	return hbuck->Output;
+_Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck) {
+    return hbuck->Output;
 }
 
 /**
@@ -131,16 +121,12 @@ _Bool Buck_GetOutput(Buck_Handle_TypeDef *hbuck)
  * @param[in] hbuck : Buck handler
  * @retval None
  */
-void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck)
-{
-	if (hbuck->Output == 1)
-	{
-		hbuck->Output = 0;
-		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 0);
-	}
-	else
-	{
-		hbuck->Output = 1;
-		HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 1);
-	}
+void Buck_ToggleOutput(Buck_Handle_TypeDef *hbuck) {
+    if (hbuck->Output == 1) {
+        hbuck->Output = 0;
+        HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 0);
+    } else {
+        hbuck->Output = 1;
+        HAL_GPIO_WritePin(LED_OUT_GPIO_Port, LED_OUT_Pin, 1);
+    }
 }

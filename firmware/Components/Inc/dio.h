@@ -26,10 +26,9 @@ typedef GPIO_TypeDef *DIO_Port_TypeDef;
 typedef uint16_t DIO_Pin_TypeDef;
 #endif
 
-typedef struct
-{
-	DIO_Port_TypeDef Port;
-	DIO_Pin_TypeDef Pin;
+typedef struct {
+    DIO_Port_TypeDef Port;
+    DIO_Pin_TypeDef Pin;
 } DIO_Handle_TypeDef;
 
 /* Public define -------------------------------------------------------------*/

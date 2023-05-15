@@ -22,15 +22,14 @@
 
 #define ENC_TimerType TIM_HandleTypeDef*
 
-typedef struct
-{
-	ENC_TimerType Timer;
-	uint32_t Counter;
-	uint32_t CounterMax;
-	uint32_t CounterMin;
-	_Bool CounterInc;
-	_Bool CounterDec;
-	uint32_t TicksPerStep;
+typedef struct {
+    ENC_TimerType Timer;
+    uint32_t Counter;
+    uint32_t CounterMax;
+    uint32_t CounterMin;
+    _Bool CounterInc;
+    _Bool CounterDec;
+    uint32_t TicksPerStep;
 } ENC_Handle_TypeDef;
 
 #else

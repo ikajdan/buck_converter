@@ -26,11 +26,10 @@ typedef TIM_HandleTypeDef *PWM_TIM_TypeDef;
 typedef uint32_t PWM_Channel_TypeDef;
 #endif
 
-typedef struct
-{
-	PWM_TIM_TypeDef Timer;
-	PWM_Channel_TypeDef Channel;
-	float Duty;
+typedef struct {
+    PWM_TIM_TypeDef Timer;
+    PWM_Channel_TypeDef Channel;
+    float Duty;
 } PWM_Handle_TypeDef;
 
 /* Public define -------------------------------------------------------------*/

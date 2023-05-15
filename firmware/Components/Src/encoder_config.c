@@ -29,9 +29,7 @@
 /* Public variables ----------------------------------------------------------*/
 #ifdef ENC_HARDWARE_COUNTER
 
-ENC_Handle_TypeDef henc1 =
-{ .Timer = &htim3, .Counter = 0, .CounterMax = 400, .CounterMin = 0,
-		.CounterInc = 0, .CounterDec = 0, .TicksPerStep = 4 };
+ENC_Handle_TypeDef henc1 = { .Timer = &htim3, .Counter = 0, .CounterMax = 400, .CounterMin = 0, .CounterInc = 0, .CounterDec = 0, .TicksPerStep = 4 };
 
 #else
 

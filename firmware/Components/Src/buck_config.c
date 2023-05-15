@@ -22,9 +22,7 @@
 /* Variables ---------------------------------------------------------*/
 
 /* Public variables ----------------------------------------------------------*/
-Buck_Handle_TypeDef hbuck1 =
-{ .Voltage = 0, .Current = 0, .TargetVoltage = 1000, .CurrentLimit = 1000,
-		.OutputMode = 0, .Output = 0 };
+Buck_Handle_TypeDef hbuck1 = { .Voltage = 0, .Current = 0, .TargetVoltage = 1000, .CurrentLimit = 1000, .OutputMode = 0, .Output = 0 };
 
 /* Private function prototypes -----------------------------------------------*/
 
