@@ -108,6 +108,6 @@ int Serial_API_ReadMsg(Buck_Handle_TypeDef *hbuck, char *msg) {
  * @retval None
  */
 void Serial_API_WriteMsg(Buck_Handle_TypeDef *hbuck, char *msg) {
-    snprintf(msg, SERIAL_API_BUF_SIZE, "{\"Voltage\": %d,\"Current\": %d,\"TargetVoltage\": %d,\"CurrentLimit\": %d,\"OutputMode\": %d,\"Output\": %d}\n",
+    snprintf(msg, SERIAL_API_BUF_SIZE, "{\"Voltage\":%d,\"Current\":%d,\"TargetVoltage\":%d,\"CurrentLimit\":%d,\"OutputMode\":%d,\"Output\":%d}\n",
             hbuck->Voltage, hbuck->Current, hbuck->TargetVoltage, hbuck->CurrentLimit, hbuck->OutputMode, hbuck->Output);
 }

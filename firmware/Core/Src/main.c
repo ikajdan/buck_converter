@@ -61,8 +61,10 @@ const unsigned int VOLTAGE_MULTIPLIER = 9.2;
 const unsigned int CURRENT_MULTIPLIER = 10;
 
 static volatile uint16_t ADC1_DATA[2];
-static volatile uint16_t DUTY_CYCLE = 0;
-static char UART_BUFFER[SERIAL_API_BUF_SIZE];
+static uint16_t DUTY_CYCLE = 0;
+static uint8_t UART_BUFFER_RX; // Single character read from the UART
+static char UART_MSG[SERIAL_API_BUF_SIZE]; // UART message
+static uint8_t UART_MSG_LENGTH = 0; // UART message length
 static double ENERGY = 0;
 /* USER CODE END PV */
 
@@ -117,16 +119,16 @@ int main(void) {
     HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1); // 10 kHz
     ENC_Init(&henc1);
     LCD_DIO_Init(&hlcd1);
-    HAL_UART_Receive_IT(&huart3, (uint8_t*) UART_BUFFER, SERIAL_API_BUF_SIZE);
+    HAL_UART_Receive_IT(&huart3, &UART_BUFFER_RX, 1);
     /* USER CODE END 2 */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
-    while (1) {
+    while(1) {
         ENC_GetCounter(&henc1);
-        if (henc1.CounterInc) {
+        if(henc1.CounterInc) {
             Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) + 100);
-        } else if (henc1.CounterDec) {
+        } else if(henc1.CounterDec) {
             Buck_SetTargetVoltage(&hbuck1, Buck_GetTargetVoltage(&hbuck1) - 100);
         }
 
@@ -153,9 +155,9 @@ int main(void) {
         LCD_DIO_SetCursor(&hlcd1, 1, 8);
         LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-        static char uart_buffer[SERIAL_API_BUF_SIZE];
-        Serial_API_WriteMsg(&hbuck1, uart_buffer);
-        HAL_UART_Transmit_IT(&huart3, (uint8_t*) uart_buffer, strlen(uart_buffer));
+        static char uart_buffer_tx[SERIAL_API_BUF_SIZE];
+        Serial_API_WriteMsg(&hbuck1, uart_buffer_tx);
+        HAL_UART_Transmit_IT(&huart3, (uint8_t*)uart_buffer_tx, strlen(uart_buffer_tx));
 
         HAL_Delay(250);
         /* USER CODE END WHILE */
@@ -193,13 +195,13 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLN = 216;
     RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
     RCC_OscInitStruct.PLL.PLLQ = 9;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+    if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
         Error_Handler();
     }
 
     /** Activate the Over-Drive mode
      */
-    if (HAL_PWREx_EnableOverDrive() != HAL_OK) {
+    if(HAL_PWREx_EnableOverDrive() != HAL_OK) {
         Error_Handler();
     }
 
@@ -211,7 +213,7 @@ void SystemClock_Config(void) {
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
 
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK) {
+    if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -223,9 +225,9 @@ void SystemClock_Config(void) {
  * @retval None
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-    if (htim == &htim10) {
+    if(htim == &htim10) {
         // ADC DMA request
-        HAL_ADC_Start_DMA(&hadc1, (uint32_t*) ADC1_DATA, hadc1.Init.NbrOfConversion);
+        HAL_ADC_Start_DMA(&hadc1, (uint32_t*)ADC1_DATA, hadc1.Init.NbrOfConversion);
     }
 }
 
@@ -236,13 +238,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
  * @retval None
  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
-    if (hadc == &hadc1) {
+    if(hadc == &hadc1) {
         // Store values in the struct
         Buck_SetVoltage(&hbuck1, ADC_REG2VOLTAGE(ADC1_DATA[0] * VOLTAGE_MULTIPLIER));
         Buck_SetCurrent(&hbuck1, ADC_REG2VOLTAGE(ADC1_DATA[1] * CURRENT_MULTIPLIER));
 
         // Control loop
-        int16_t error = (int16_t) Buck_GetTargetVoltage(&hbuck1) - (int16_t) Buck_GetVoltage(&hbuck1);
+        int16_t error = (int16_t)Buck_GetTargetVoltage(&hbuck1) - (int16_t)Buck_GetVoltage(&hbuck1);
         float du = KI * error;
 
         DUTY_CYCLE += du;
@@ -265,7 +267,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
         //			}
         //		}
 
-        if (Buck_GetOutput(&hbuck1) == 1) {
+        if(Buck_GetOutput(&hbuck1) == 1) {
             __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
         } else {
             __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100); // Output disabled
@@ -279,17 +281,17 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
  * @retval None
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    if (GPIO_Pin == BTN_OUT_Pin) {
+    if(GPIO_Pin == BTN_OUT_Pin) {
         Buck_ToggleOutput(&hbuck1);
-    } else if (GPIO_Pin == BTN_RESET_Pin) {
+    } else if(GPIO_Pin == BTN_RESET_Pin) {
         ENERGY = 0;
-    } else if (GPIO_Pin == BTN_PRESET1_Pin) {
+    } else if(GPIO_Pin == BTN_PRESET1_Pin) {
         Buck_SetTargetVoltage(&hbuck1, 1500);
-    } else if (GPIO_Pin == BTN_PRESET2_Pin) {
+    } else if(GPIO_Pin == BTN_PRESET2_Pin) {
         Buck_SetTargetVoltage(&hbuck1, 3300);
-    } else if (GPIO_Pin == BTN_PRESET3_Pin) {
+    } else if(GPIO_Pin == BTN_PRESET3_Pin) {
         Buck_SetTargetVoltage(&hbuck1, 5000);
-    } else if (GPIO_Pin == BTN_PRESET4_Pin) {
+    } else if(GPIO_Pin == BTN_PRESET4_Pin) {
         Buck_SetTargetVoltage(&hbuck1, 12000);
     }
 }
@@ -300,10 +302,21 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
  * @retval None
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart == &huart3) {
-        Serial_API_ReadMsg(&hbuck1, UART_BUFFER);
-        HAL_UART_Receive_IT(&huart3, (uint8_t*) UART_BUFFER,
-                SERIAL_API_BUF_SIZE);
+    if(huart == &huart3) {
+        if(UART_BUFFER_RX == '\n' || UART_BUFFER_RX == '\r') {
+            if(UART_MSG_LENGTH > 0) {
+                UART_MSG[UART_MSG_LENGTH] = '\0';
+                UART_MSG_LENGTH = 0;
+                Serial_API_ReadMsg(&hbuck1, UART_MSG);
+            }
+        } else {
+            if(UART_MSG_LENGTH >= SERIAL_API_BUF_SIZE - 1) {
+                UART_MSG_LENGTH = 0;
+            }
+            UART_MSG[UART_MSG_LENGTH++] = UART_BUFFER_RX;
+        }
+
+        HAL_UART_Receive_IT(&huart3, &UART_BUFFER_RX, 1);
     }
 }
 /* USER CODE END 4 */
@@ -316,12 +329,12 @@ void Error_Handler(void) {
     /* USER CODE BEGIN Error_Handler_Debug */
     /* User can add his own implementation to report the HAL error return state */
     __disable_irq();
-    while (1) {
+    while(1) {
     }
     /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
  * @brief  Reports the name of the source file and the source line number
  *         where the assert_param error has occurred.
