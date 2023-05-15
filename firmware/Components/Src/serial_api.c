@@ -24,8 +24,8 @@
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-jsmn_parser JSMN_PARSER;
-jsmntok_t JSMN_TOK[64];
+static jsmn_parser JSMN_PARSER;
+static jsmntok_t JSMN_TOK[64];
 /* Public variables ----------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/

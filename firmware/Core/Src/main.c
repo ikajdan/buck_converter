@@ -52,16 +52,18 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+// Controller parameters
+const float KI = 0.01;
+
 // Scaling factor based on the voltage divider
 const unsigned int VOLTAGE_MULTIPLIER = 9.2;
 // Scaling factor based on the shunt resistor
 const unsigned int CURRENT_MULTIPLIER = 10;
 
-uint16_t ADC1_DATA[2];
-uint16_t DUTY_CYCLE = 0;
-double ENERGY = 0;
-const float KI = 0.01;
-char UART_BUFFER[SERIAL_API_BUF_SIZE];
+static volatile uint16_t ADC1_DATA[2];
+static volatile uint16_t DUTY_CYCLE = 0;
+static char UART_BUFFER[SERIAL_API_BUF_SIZE];
+static double ENERGY = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -151,7 +153,7 @@ int main(void) {
         LCD_DIO_SetCursor(&hlcd1, 1, 8);
         LCD_DIO_printStr(&hlcd1, lcd_buffer);
 
-        char uart_buffer[SERIAL_API_BUF_SIZE];
+        static char uart_buffer[SERIAL_API_BUF_SIZE];
         Serial_API_WriteMsg(&hbuck1, uart_buffer);
         HAL_UART_Transmit_IT(&huart3, (uint8_t*) uart_buffer, strlen(uart_buffer));
 
@@ -246,22 +248,22 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
         DUTY_CYCLE += du;
 
         // Simple regulation
-//		if (Buck_GetVoltage(&hbuck1) < Buck_GetTargetVoltage(&hbuck1))
-//		{
-//			DUTY_CYCLE = DUTY_CYCLE + 1;
-//			if (DUTY_CYCLE > 100)
-//			{
-//				DUTY_CYCLE = 100;
-//			}
-//		}
-//		else
-//		{
-//			DUTY_CYCLE = DUTY_CYCLE - 1;
-//			if (DUTY_CYCLE < 0)
-//			{
-//				DUTY_CYCLE = 0;
-//			}
-//		}
+        //		if (Buck_GetVoltage(&hbuck1) < Buck_GetTargetVoltage(&hbuck1))
+        //		{
+        //			DUTY_CYCLE = DUTY_CYCLE + 1;
+        //			if (DUTY_CYCLE > 100)
+        //			{
+        //				DUTY_CYCLE = 100;
+        //			}
+        //		}
+        //		else
+        //		{
+        //			DUTY_CYCLE = DUTY_CYCLE - 1;
+        //			if (DUTY_CYCLE < 0)
+        //			{
+        //				DUTY_CYCLE = 0;
+        //			}
+        //		}
 
         if (Buck_GetOutput(&hbuck1) == 1) {
             __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 100 - DUTY_CYCLE);
@@ -301,7 +303,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if (huart == &huart3) {
         Serial_API_ReadMsg(&hbuck1, UART_BUFFER);
         HAL_UART_Receive_IT(&huart3, (uint8_t*) UART_BUFFER,
-        SERIAL_API_BUF_SIZE);
+                SERIAL_API_BUF_SIZE);
     }
 }
 /* USER CODE END 4 */
@@ -321,17 +323,17 @@ void Error_Handler(void) {
 
 #ifdef  USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+    /* USER CODE BEGIN 6 */
+    /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+    /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
